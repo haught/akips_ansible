@@ -8,9 +8,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 akips_server = os.environ['server']
 password = os.environ['pass']
-
 groups = {}
-with open("groups.txt") as f:
+with open(os.path.dirname(os.path.realpath(__file__)) + "/groups.txt") as f:
     groups = f.readlines()
 groups = [x.strip() for x in groups]
 
