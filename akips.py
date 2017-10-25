@@ -28,7 +28,7 @@ response = requests.get(url.format(akips_server=akips_server,
                         verify=False)
 lines = response.text.split('\n')
 inventory = {
-#             'ios': {'hosts': []},
+             'ios': {'hosts': []},
              '_meta': {'hostvars': {}},
             }
 
@@ -37,7 +37,7 @@ for line in lines:
         continue
     host, _, _, _, data= line.split(' ')
     ip = data.split(',')[-1]
-#    inventory['ios']['hosts'].append(host)
+    inventory['ios']['hosts'].append(host)
     inventory['_meta']['hostvars'][host] = {'ansible_host': ip}
 
 print json.dumps(inventory)
