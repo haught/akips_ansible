@@ -4,6 +4,9 @@ import os
 import json
 import requests
 
+for a in os.environ:
+    print('Var: ', a, 'Value: ', os.getenv(a))
+
 akips_server = os.environ['hostname']
 password = os.environ['password']
 group = os.environ['group']
