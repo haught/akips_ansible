@@ -3,12 +3,9 @@
 import os
 import json
 import requests
-import sys
-for a in os.environ:
-    sys.stderr.write(' Var: ' + a + ' Value: ' + os.getenv(a) + "\n")
 
-akips_server = os.environ['hostname']
-password = os.environ['password']
+akips_server = os.environ['AKIPS_HOST']
+password = os.environ['AKIPS_PASS']
 group = os.environ['group']
 
 url = 'https://{akips_server}/api-db?password={password};cmds=mget+*+*+ping4+PING.icmpState+value+/up/+any+group+{group}'
