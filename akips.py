@@ -3,8 +3,6 @@
 import os
 import json
 import requests
-import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 akips_server = os.environ['server']
 password = os.environ['pass']
@@ -22,7 +20,7 @@ for group in groups:
                                        password=password,
                                        group=group),
                             proxies={'http': None, 'https': None},
-                            verify=False)
+                            verify=os.path.dirname(os.path.realpath(__file__)) + "/cacert.cer")
     lines = response.text.split('\n')
     inventory[group] = {'hosts': []}
     for line in lines:
