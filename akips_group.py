@@ -3,9 +3,9 @@
 import os
 import json
 import requests
-
+import sys
 for a in os.environ:
-    print('Var: ', a, 'Value: ', os.getenv(a))
+    sys.stderr.write(' Var: ' + a + ' Value: ' + os.getenv(a) + "\n")
 
 akips_server = os.environ['hostname']
 password = os.environ['password']
