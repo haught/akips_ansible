@@ -16,7 +16,7 @@ groupresponse = requests.get(groupurl.format(akips_server=akips_server,
 grouplines = groupresponse.text.split('\n')
 
 for group in grouplines:
-    if group == 'maintenance_mode' or group == 'CS-Servers':
+    if group == 'maintenance_mode' or group == 'CS-Servers' or group == '':
         continue
 
     url = 'https://{akips_server}/api-db?password={password};cmds=mget+*+*+ping4+PING.icmpState+value+/up/+any+group+{group}'
