@@ -16,7 +16,7 @@ groupresponse = requests.get(groupurl.format(akips_server=akips_server,
 grouplines = groupresponse.text.split('\n')
 
 for group in grouplines:
-    if group == 'maintenance_mode' or group == 'CS-Servers':
+    if group == 'maintenance_mode' or group == 'CS-Servers' or group == '':
         continue
 
     url = 'https://{akips_server}/api-db?password={password};cmds=mget+*+*+ping4+PING.icmpState+value+/up/+any+group+{group}'
@@ -36,6 +36,10 @@ for group in grouplines:
         ip = line.split(',')[-1]
         inventory[group]['hosts'].append(host)
         inventory['_meta']['hostvars'][host] = {'ansible_host': ip}
+        if group.find('IOS') > 0:
+            inventory['_meta']['hostvars'][host].update({'ansible_network_os': 'ios'})
+        if group.find('NX-OS') > 0:
+            inventory['_meta']['hostvars'][host].update({'ansible_network_os': 'nxos'})
 
 print json.dumps(inventory)
 
