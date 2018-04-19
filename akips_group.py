@@ -27,6 +27,10 @@ for line in lines:
     ip = data.split(',')[-1]
     inventory[group]['hosts'].append(host)
     inventory['_meta']['hostvars'][host] = {'ansible_host': ip}
+    if line.find('IOS') > 0:
+        inventory['_meta']['hostvars'][host].update({'ansible_network_os': 'ios'})
+    if line.find('NX-OS') > 0:
+        inventory['_meta']['hostvars'][host].update({'ansible_network_os': 'nxos'})
 
 print json.dumps(inventory)
 
