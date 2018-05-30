@@ -3,6 +3,7 @@
 import os
 import json
 import requests
+import re
 
 akips_server = os.environ['AKIPS_HOST']
 password = os.environ['AKIPS_PASS']
