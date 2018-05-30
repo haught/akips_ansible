@@ -36,11 +36,14 @@ for group in grouplines:
         host = line.split(' ')[0]
         ip = line.split(',')[-1]
         inventory[group]['hosts'].append(host)
-        inventory['_meta']['hostvars'][host] = {'ansible_host': ip}
+        try:
+            x = inventory['_meta']['hostvars'][host]
+        except KeyError:
+            inventory['_meta']['hostvars'][host] = {'ansible_host': ip}
         if re.search('IOS', group, re.IGNORECASE):
             inventory['_meta']['hostvars'][host].update({'ansible_network_os': 'ios'})
         if re.search('NX-OS', group, re.IGNORECASE):
             inventory['_meta']['hostvars'][host].update({'ansible_network_os': 'nxos'})
 
-print json.dumps(inventory)
+print json.dumps(inventory, indent=4, sort_keys=True)
 
