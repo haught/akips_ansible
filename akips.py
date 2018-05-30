@@ -36,9 +36,9 @@ for group in grouplines:
         ip = line.split(',')[-1]
         inventory[group]['hosts'].append(host)
         inventory['_meta']['hostvars'][host] = {'ansible_host': ip}
-        if group.find('IOS') > 0:
+        if re.search('IOS', group, re.IGNORECASE):
             inventory['_meta']['hostvars'][host].update({'ansible_network_os': 'ios'})
-        if group.find('NX-OS') > 0:
+        if re.search('NX-OS', group, re.IGNORECASE):
             inventory['_meta']['hostvars'][host].update({'ansible_network_os': 'nxos'})
 
 print json.dumps(inventory)
