@@ -14,9 +14,18 @@ groupresponse = requests.get(groupurl.format(akips_server=akips_server,
                                         password=password),
                         proxies={'http': None, 'https': None},
                         verify=os.path.dirname(os.path.realpath(__file__)) + "/cacert.cer")
-grouplines = groupresponse.text.split('\n')
+grouplines = filter(None, groupresponse.text.split('\n'))
 
-for group in grouplines:
+groupsuperurl = 'https://{akips_server}/api-db?password={password};cmds=list+device+super+group'
+groupsuperresponse = requests.get(groupsuperurl.format(akips_server=akips_server,
+                                        password=password),
+                        proxies={'http': None, 'https': None},
+                        verify=os.path.dirname(os.path.realpath(__file__)) + "/cacert.cer")
+groupsuperlines = filter(None, groupsuperresponse.text.split('\n'))
+
+groups = grouplines + groupsuperlines
+
+for group in groups:
     if group == 'maintenance_mode' or re.search(r'^4.*|AP$|Servers$|^V-sl.*', group) or group == '':
         continue
 
@@ -46,4 +55,3 @@ for group in grouplines:
             inventory['_meta']['hostvars'][host].update({'ansible_network_os': 'nxos'})
 
 print json.dumps(inventory, indent=4, sort_keys=True)
-
