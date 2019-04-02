@@ -27,7 +27,7 @@ groups = grouplines + groupsuperlines
 
 for group in groups:
     # groups to ignore
-    if group == 'maintenance_mode' or re.search(r'^4.*|AP$|Aruba|Linux|Servers$|^V-sl.*', group) or group == '':
+    if group == 'maintenance_mode' or re.search(r'^4.*|AP$|Aruba|Linux|TrippLite|Servers$|^V-sl.*', group) or group == '':
         continue
 
     url = 'https://{akips_server}/api-db?password={password};cmds=mget+*+*+ping4+PING.icmpState+value+/up/+any+group+{group}'
