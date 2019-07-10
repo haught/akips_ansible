@@ -7,6 +7,8 @@ import re
 
 akips_server = os.environ['AKIPS_HOST']
 password = os.environ['AKIPS_PASS']
+exclude = r"\b(?=\w)" + os.environ['AKIPS_EXCLUDE'] + r"\b(?!\w)"
+
 inventory = {'_meta': {'hostvars': {}}}
 
 groupurl = 'https://{akips_server}/api-db?password={password};cmds=list+device+group'
@@ -27,7 +29,7 @@ groups = grouplines + groupsuperlines
 
 for group in groups:
     # groups to ignore
-    if group == 'maintenance_mode' or re.search(r'^4.*|AP$|Aruba|Linux|TrippLite|Servers$|^V-sl.*', group) or group == '':
+    if group == '' or re.search(exclude, group) or group == '':
         continue
 
     url = 'https://{akips_server}/api-db?password={password};cmds=mget+*+*+ping4+PING.icmpState+value+/up/+any+group+{group}'
