@@ -1,19 +1,10 @@
-# AKiPs AWX/Tower Inventory Source Script
-This script will allow the use of AKiPs as a inventory source for AWX/Ansible Tower 
----
+# AKiPs AWX/Tower Inventory Source
+
+This script will allow the use of AKiPs as a inventory source for AWX/Ansible Tower.
 
 ## Setup:
 
-
-
-As an inventory source, use the akips_group.py script and set an AKiPs group as an environment variable
-```
-{
- "group": "0-Aruba-AP"
-}
-```
----
-A new credential type will need to be created to store the information for AKiPs and the script.
+A new credential type will need to be created to store the information for your AKiPs API user.
 
 *Name:*
 ```
@@ -48,16 +39,20 @@ env:
   AKIPS_USER: '{{username}}'
 ```
 
-With the credential type added, the credentials will need to be added. Add a new credential and choose the new credential type you just created. Fill out the hostname, username, and password for your AKiPs API user (API must be enabled in AKiPs). 
+With the credential type added, the actual credentials will need to be added. Add a new credential and choose the new credential type you just created. Fill out the hostname, username (not actually used), and password for your AKiPs API user (API must be enabled in AKiPs).
 
 With the credentials added, you will need to add your fork of this repostory as a new project just as you do for playbook projects.
 
-Once the project is added you can create a new inventory and under the source add a new source as *Sourced from a Project* choosing your new credential, new project, and choose *akips.py* as your inventory file. Checking the *overwrite* box will remove devices no longer in AKiPs and is good to set.
+Once the project is added and synced you can create a new inventory and under *Source* add a new one as *Sourced from a Project* choosing your new credential you just added, new project you just added, and choose *akips.py* as your inventory file. Checking the *overwrite* box will remove devices no longer in AKiPs and is good to set if there is only one source.
 
 For the environmental variables you can exclude specific AKiPs groups by setting the AKIPS_EXCLUDE variable. For example, if you wanted to exclude the *maintenance_mode*, *TrippLite*, and all groups ending in *AP* you could use:
 
 ```yaml
-AKIPS_EXCLUDE: '^maintenance_mode$|TrippLite|AP$'
+AKIPS_EXCLUDE: >-
+  ^maintenance_mode$|TrippLite|AP$
 ```
+There are also variables for *AKIPS_IOS_REGEX*, *AKIPS_NXOS_REGEX*, and *AKIPS_ASA_REGEX* that will overwrite the default ones in the script to adding *ansible_network_os* values to the hosts.
 
-The inventory can now be synced. 
+## Fin:
+
+The inventory can now be synced. You can use your AKiPs groups for the *limit* value for your playbook templates. Setting a scheduled run for the source will keep things up to date automatically.
