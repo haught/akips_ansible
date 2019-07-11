@@ -27,7 +27,7 @@ groups = grouplines + groupsuperlines
 
 for group in groups:
     # groups to ignore
-    if group == '' or re.search(exclude, group) or group == '':
+    if group == '' or re.search(exclude, group):
         continue
 
     url = 'https://{akips_server}/api-db?password={password};cmds=mget+*+*+ping4+PING.icmpState+value+/up/+any+group+{group}'
