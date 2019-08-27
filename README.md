@@ -45,12 +45,20 @@ With the credentials added, you will need to add your fork of this repostory as 
 
 Once the project is added and synced you can create a new inventory and under *Source* add a new one as *Sourced from a Project* choosing your new credential you just added, new project you just added, and choose *akips.py* as your inventory file. Checking the *overwrite* box will remove devices no longer in AKiPs and is good to set if there is only one source.
 
-For the environmental variables you can exclude specific AKiPs groups by setting the AKIPS_EXCLUDE variable. For example, if you wanted to exclude the *maintenance_mode*, *TrippLite*, and all groups ending in *AP* you could use:
+For the environmental variables you can exclude specific AKiPs groups by setting the AKIPS_EXCLUDE_GROUPS and AKIPS_EXCLUDE_HOSTS variables. For example, if you wanted to exclude the *maintenance_mode* group, *TrippLite* group, and all groups ending in *AP* you could use:
 
 ```yaml
-AKIPS_EXCLUDE: >-
+AKIPS_EXCLUDE_GROUPS: >-
   ^maintenance_mode$|TrippLite|AP$
 ```
+
+If you needed to exclude hosts starting with *lab*, you could use:
+
+```yaml
+AKIPS_EXCLUDE_HOSTS: >-
+  ^lab
+```
+
 There are also variables for *AKIPS_IOS_REGEX*, *AKIPS_NXOS_REGEX*, and *AKIPS_ASA_REGEX* that will overwrite the default ones in the script to adding *ansible_network_os* values to the hosts.
 
 ## Fin:

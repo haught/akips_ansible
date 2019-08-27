@@ -7,7 +7,8 @@ import re
 
 akips_server = os.environ['AKIPS_HOST']
 password = os.environ['AKIPS_PASS']
-exclude = r"\b(?=\w)" + os.environ['AKIPS_EXCLUDE'] + r"\b(?!\w)"
+exclude_group = r"\b(?=\w)" + os.getenv('AKIPS_EXCLUDE_GROUPS', '') + r"\b(?!\w)"
+exclude_host = r"\b(?=\w)" + os.getenv('AKIPS_EXCLUDE_HOSTS', '') + r"\b(?!\w)"
 
 inventory = {'_meta': {'hostvars': {}}}
 
@@ -27,7 +28,7 @@ groups = grouplines + groupsuperlines
 
 for group in groups:
     # groups to ignore
-    if group == '' or re.search(exclude, group):
+    if group == '' or re.search(exclude_group, group):
         continue
 
     url = 'https://{akips_server}/api-db?password={password};cmds=mget+*+*+ping4+PING.icmpState+value+/up/+any+group+{group}'
@@ -43,6 +44,8 @@ for group in groups:
         if line == '':
             continue
         host = line.split(' ')[0]
+        if host == '' or re.search(exclude_host, host):
+            continue
         ip = line.split(',')[-1]
         inventory[group]['hosts'].append(host)
         try:
