@@ -58,5 +58,7 @@ for group in groups:
             inventory['_meta']['hostvars'][host].update({'ansible_network_os': 'nxos'})
         if re.search(os.environ['AKIPS_ASA_REGEX'] if 'AKIPS_ASA_REGEX' in os.environ else 'ASA', group, re.IGNORECASE):
             inventory['_meta']['hostvars'][host].update({'ansible_network_os': 'asa'})
+        if re.search(os.environ['AKIPS_PANOS_REGEX'] if 'AKIPS_PANOS_REGEX' in os.environ else 'PaloAlto', group, re.IGNORECASE):
+            inventory['_meta']['hostvars'][host].update({'ansible_network_os': 'panos'})
 
 print(json.dumps(inventory, indent=4, sort_keys=True))
