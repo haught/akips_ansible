@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import os
 import json
@@ -9,6 +9,7 @@ akips_server = os.environ['AKIPS_HOST']
 password = os.environ['AKIPS_PASS']
 exclude_group = r"\b(?=\w)" + os.getenv('AKIPS_EXCLUDE_GROUPS', '') + r"\b(?!\w)"
 exclude_host = r"\b(?=\w)" + os.getenv('AKIPS_EXCLUDE_HOSTS', '') + r"\b(?!\w)"
+exclude_networks = r"\b(?=\w)" + os.getenv('AKIPS_EXCLUDE_NETWORKS', '') + r"\b(?!\w)"
 
 inventory = {'_meta': {'hostvars': {}}}
 
@@ -44,9 +45,11 @@ for group in groups:
         if line == '':
             continue
         host = line.split(' ')[0]
-        if host == '' or re.search(exclude_host, host):
-            continue
         ip = line.split(',')[-1]
+        # hosts to ignore
+        if host == '' or re.search(exclude_host, host) or re.search(exclude_networks, ip):
+            print("IGNORE " + host + " - " + ip)
+            continue
         inventory[group]['hosts'].append(host)
         try:
             x = inventory['_meta']['hostvars'][host]
