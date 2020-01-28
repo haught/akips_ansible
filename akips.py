@@ -16,13 +16,13 @@ groupurl = 'https://{akips_server}/api-db?password={password};cmds=list+device+g
 groupresponse = requests.get(groupurl.format(akips_server=akips_server,
                                         password=password),
                         proxies={'http': None, 'https': None})
-grouplines = filter(None, groupresponse.text.split('\n'))
+grouplines = groupresponse.text.splitlines()
 
 groupsuperurl = 'https://{akips_server}/api-db?password={password};cmds=list+device+super+group'
 groupsuperresponse = requests.get(groupsuperurl.format(akips_server=akips_server,
                                         password=password),
                         proxies={'http': None, 'https': None})
-groupsuperlines = filter(None, groupsuperresponse.text.split('\n'))
+groupsuperlines = groupsuperresponse.text.splitlines()
 
 groups = grouplines + groupsuperlines
 
@@ -37,7 +37,7 @@ for group in groups:
                                        password=password,
                                        group=group),
                             proxies={'http': None, 'https': None})
-    lines = response.text.split('\n')
+    lines = response.text.splitlines()
     inventory[group] = {'hosts': []}
 
     for line in lines:
