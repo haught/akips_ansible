@@ -48,7 +48,6 @@ for group in groups:
         ip = line.split(',')[-1]
         # hosts to ignore
         if host == '' or re.search(exclude_host, host) or re.search(exclude_networks, ip):
-            print("IGNORE " + host + " - " + ip)
             continue
         inventory[group]['hosts'].append(host)
         try:
