@@ -1,3 +1,5 @@
+> This repo is no longer maintained. Please see https://github.com/haught/ansible_akips as an alternative.
+
 # AKiPs AWX/Tower Inventory Source
 
 This script will allow the use of AKiPs as a inventory source for AWX/Ansible Tower.
